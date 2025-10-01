@@ -1,0 +1,637 @@
+:root {
+  --primary-color: #1976d2;
+  --primary-light: #42a5f5;
+  --secondary-color: #4caf50;
+  --accent-color: #ff4081;
+  --text-primary: #2c3e50;
+  --text-secondary: #546e7a;
+  --background: #f8f9fa;
+  --surface: #ffffff;
+  --error: #d32f2f;
+  --border: #e0e0e0;
+  --shadow: 0 2px 8px rgba(0,0,0,0.08);
+  --shadow-hover: 0 3px 12px rgba(0,0,0,0.12);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  margin: 0;
+  padding: 12px;
+  color: var(--text-primary);
+  min-height: 100vh;
+  line-height: 1.4;
+  font-size: 14px;
+}
+
+.contenedor {
+  max-width: 800px;
+  margin: 0 auto;
+  background: var(--surface);
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+}
+
+/* HEADER COMPACTO */
+header {
+  text-align: center;
+  margin-bottom: 18px;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+  color: white;
+  padding: 16px;
+  border-radius: 14px;
+}
+
+h1 {
+  color: white;
+  margin-bottom: 4px;
+  font-size: 1.6em;
+  font-weight: 600;
+}
+
+.subtitulo {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.9em;
+  margin: 0;
+  font-weight: 400;
+}
+
+/* INSTRUCCIONES COMPACTAS */
+.instrucciones {
+  margin-bottom: 18px;
+}
+
+.instrucciones details {
+  background: rgba(227, 242, 253, 0.7);
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1.5px solid #bbdefb;
+}
+
+.instrucciones summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--primary-color);
+  font-size: 0.9em;
+  list-style: none;
+}
+
+.instrucciones ol {
+  margin: 8px 0 0 18px;
+  padding: 0;
+}
+
+.instrucciones li {
+  margin-bottom: 4px;
+  color: var(--text-secondary);
+  font-size: 0.85em;
+  line-height: 1.3;
+}
+
+/* FORMULARIO COMPACTO */
+form {
+  margin-bottom: 16px;
+}
+
+label {
+  display: block;
+  margin-top: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.9em;
+  margin-bottom: 4px;
+}
+
+.fila-doble {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 0 auto 12px;
+  max-width: 500px;
+}
+
+.campo-doble {
+  flex: 1;
+  text-align: center;
+}
+
+.campo-doble input {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.9em;
+  text-align: center;
+  background: var(--surface);
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.campo-doble input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.1);
+  outline: none;
+}
+
+.mensaje-error {
+  color: var(--error);
+  font-size: 0.75em;
+  margin-top: 3px;
+  font-weight: 500;
+  display: none;
+}
+
+/* GRILLA DE ANIMALITOS COMPACTA */
+.grilla-animalitos {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 5px;
+  margin: 12px 0;
+  padding: 12px;
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  border-radius: 12px;
+  border: 1.5px solid var(--border);
+}
+
+.animalito-btn {
+  aspect-ratio: 1 / 1;
+  min-height: 0;
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.animalito-btn:hover {
+  background: rgba(227, 242, 253, 0.6);
+  border-color: var(--primary-light);
+  transform: translateY(-1px);
+}
+
+.animalito-btn.seleccionado {
+  border-color: var(--primary-color);
+  background: rgba(227, 242, 253, 0.8);
+  transform: scale(1.02);
+  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.2);
+}
+
+.animalito-btn.seleccionado::after {
+  content: '✓';
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  background: var(--primary-color);
+  color: white;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  font-size: 0.7em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+/* IMÁGENES COMPACTAS PARA BOTONES PEQUEÑOS */
+.imagen-animalito {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.texto-animalito {
+  position: relative;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 2px 4px;
+  border-radius: 3px;
+  margin: 1px;
+  font-weight: 600;
+  backdrop-filter: blur(2px);
+}
+
+.nombre-animalito {
+  font-size: 0.6em;
+  color: var(--text-primary);
+}
+
+.numero-animalito {
+  font-size: 0.55em;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.emoji-fallback {
+  font-size: 1.1em;
+  z-index: 2;
+  position: relative;
+}
+
+/* CARTÓN DE JUGADA MÁS PEQUEÑO QUE LA GRILLA */
+.carton-jugada {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 3px;
+  margin: 10px 0;
+  min-height: 70px;
+  padding: 10px;
+  background: linear-gradient(135deg, #f0f8ff, #e3f2fd);
+  border: 1.5px dashed var(--primary-light);
+  border-radius: 10px;
+  align-content: start;
+}
+
+.casilla-jugada {
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface);
+  border: 1.5px solid var(--secondary-color);
+  border-radius: 4px;
+  padding: 0;
+  font-size: 0.6em;
+  text-align: center;
+  color: var(--text-primary);
+  font-weight: 600;
+  position: relative;
+  overflow: hidden;
+}
+
+.imagen-carton {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.texto-carton {
+  position: relative;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 1px 3px;
+  border-radius: 2px;
+  font-weight: 600;
+  font-size: 0.65em;
+}
+
+.emoji-carton {
+  font-size: 0.75em;
+}
+
+/* CONTADORES COMPACTOS */
+#contador {
+  background: linear-gradient(135deg, var(--accent-color), #f06292);
+  color: white;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 0.75em;
+  font-weight: 600;
+}
+
+.aviso {
+  text-align: center;
+  margin: 14px 0;
+  color: var(--error);
+  font-weight: 600;
+  font-size: 0.85em;
+  padding: 8px;
+  background: rgba(255, 235, 238, 0.7);
+  border-radius: 6px;
+  border-left: 3px solid var(--error);
+}
+
+/* BOTONES PRINCIPALES COMPACTOS */
+button {
+  width: 100%;
+  padding: 10px 14px;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9em;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 16px;
+  transition: all 0.2s ease;
+}
+
+button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #1565c0, #1e88e5);
+  transform: translateY(-1px);
+}
+
+button:disabled {
+  background: #bdbdbd;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* CONTADOR DE JUGADAS COMPACTO */
+.contador-jugadas {
+  text-align: center;
+  margin-top: 12px;
+  font-weight: 600;
+  color: var(--primary-color);
+  font-size: 0.85em;
+  padding: 8px;
+  background: rgba(227, 242, 253, 0.6);
+  border-radius: 6px;
+  border: 1.5px solid #bbdefb;
+}
+
+#textoContador {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 0.8em;
+}
+
+.progreso-contenedor {
+  width: 100%;
+  height: 5px;
+  background: rgba(224, 224, 224, 0.6);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 4px;
+}
+
+.progreso-bar {
+  height: 100%;
+  background: linear-gradient(135deg, var(--secondary-color), #66bb6a);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+  width: 0%;
+}
+
+/* BOTONES DE ACCIÓN COMPACTOS */
+.botones-accion {
+  display: flex;
+  gap: 8px;
+  margin: 18px 0 12px 0;
+  padding: 12px;
+  border-top: 1.5px dashed #dee2e6;
+  background: rgba(248, 249, 250, 0.6);
+  border-radius: 10px;
+}
+
+.botones-accion button {
+  flex: 1;
+  margin-top: 0;
+  width: auto;
+  padding: 8px 12px;
+  font-size: 0.85em;
+  font-weight: 600;
+}
+
+#btnGenerarPDF {
+  background: linear-gradient(135deg, #28a745, #20c997);
+}
+
+#btnResetJugadas {
+  background: linear-gradient(135deg, #dc3545, #e83e8c);
+}
+
+/* FOOTER COMPACTO */
+.footer-info {
+  margin-top: 18px;
+  padding-top: 12px;
+  border-top: 1.5px solid var(--border);
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.8em;
+  background: rgba(248, 249, 250, 0.6);
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.footer-info p {
+  margin: 3px 0;
+  font-weight: 500;
+}
+
+/* PÁGINA RESUMEN COMPACTA */
+.pagina-resumen {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.resumen-contenido {
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.datos-usuario {
+  background: linear-gradient(135deg, rgba(227, 242, 253, 0.7), rgba(240, 248, 255, 0.7));
+  padding: 16px;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  border: 1.5px solid var(--primary-light);
+}
+
+.datos-usuario h3 {
+  color: var(--primary-color);
+  margin-bottom: 12px;
+  text-align: center;
+  font-size: 1em;
+  font-weight: 600;
+}
+
+.datos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 6px;
+}
+
+.dato-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 8px;
+  background: var(--surface);
+  border-radius: 5px;
+  border-left: 3px solid var(--secondary-color);
+}
+
+.dato-item strong {
+  color: var(--text-primary);
+  font-size: 0.8em;
+}
+
+.dato-item span {
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: 0.8em;
+}
+
+.tabla-resumen {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0;
+  background: var(--surface);
+  border-radius: 8px;
+  overflow: hidden;
+  font-size: 0.8em;
+}
+
+.tabla-resumen th {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+  color: white;
+  padding: 8px 10px;
+  text-align: left;
+  font-weight: 600;
+}
+
+.tabla-resumen td {
+  padding: 6px 10px;
+  border-bottom: 1px solid rgba(224, 224, 224, 0.6);
+}
+
+.tabla-resumen tr:nth-child(even) {
+  background-color: rgba(248, 249, 250, 0.5);
+}
+
+.resumen-acciones {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 18px;
+  flex-wrap: wrap;
+}
+
+.resumen-acciones button {
+  margin-top: 0;
+  width: auto;
+  padding: 8px 16px;
+  font-size: 0.85em;
+  min-width: 140px;
+}
+
+/* RESPONSIVE MEJORADO */
+@media (max-width: 768px) {
+  body {
+    padding: 8px;
+  }
+  
+  .contenedor {
+    padding: 16px;
+    border-radius: 12px;
+  }
+  
+  header {
+    padding: 14px;
+    border-radius: 10px;
+    margin-bottom: 14px;
+  }
+  
+  h1 {
+    font-size: 1.4em;
+  }
+  
+  .fila-doble {
+    flex-direction: column;
+    gap: 8px;
+    max-width: 100%;
+  }
+  
+  .grilla-animalitos {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    padding: 10px;
+  }
+  
+  .carton-jugada {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    padding: 8px;
+    min-height: 60px;
+  }
+  
+  .botones-accion {
+    flex-direction: column;
+    gap: 6px;
+    padding: 10px;
+  }
+  
+  .datos-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .resumen-acciones {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .resumen-acciones button {
+    width: 100%;
+    max-width: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .contenedor {
+    padding: 12px;
+  }
+  
+  .grilla-animalitos {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .carton-jugada {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  h1 {
+    font-size: 1.3em;
+  }
+  
+  .subtitulo {
+    font-size: 0.85em;
+  }
+  
+  .nombre-animalito {
+    font-size: 0.55em;
+  }
+  
+  .numero-animalito {
+    font-size: 0.5em;
+  }
+}
+
+/* MEJORAS DE ACCESIBILIDAD */
+button:focus-visible,
+.animalito-btn:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 1px;
+}
+
+/* ESTILOS ADICIONALES PARA MEJOR VISUAL */
+.contador-completado {
+  color: var(--secondary-color);
+  background: rgba(232, 245, 233, 0.7);
+  border-color: #c8e6c9;
+}
+
+.sin-jugadas {
+  text-align: center;
+  color: var(--text-secondary);
+  font-style: italic;
+  padding: 20px;
+}

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Juego de selección de animalitos - Elige tus 15 números favoritos">
+  <meta name="theme-color" content="#1976d2">
+  <title>Jugar al Juego de los Animalitos</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+  <div class="contenedor">
+    <!-- FORMULARIO PRINCIPAL -->
+    <div id="formularioContainer">
+      <header>
+        <h1>🎮 ¡Elige tus 15 Animalitos!</h1>
+        <p class="subtitulo">Completa tus datos y selecciona tus números de la suerte</p>
+      </header>
+
+      <section class="instrucciones">
+        <details>
+          <summary>📋 ¿Cómo jugar?</summary>
+          <ol>
+            <li>Completa tus datos personales</li>
+            <li>Ingresa el monto transferido y referencia</li>
+            <li>Selecciona 15 animalitos (máximo)</li>
+            <li>Revisa tu jugada y envía</li>
+            <li>¡Listo! Tu jugada será procesada</li>
+          </ol>
+        </details>
+      </section>
+
+      <form id="formularioJugada">
+        <!-- Nombre y Teléfono -->
+        <div class="fila-doble">
+          <div class="campo-doble">
+            <label for="nombre">Nombre y Apellido:</label>
+            <input type="text" id="nombre" name="nombre" maxlength="25" required placeholder="Ej: Juan Pérez" />
+          </div>
+          <div class="campo-doble">
+            <label for="telefono">Teléfono:</label>
+            <input type="tel" id="telefono" name="telefono" required pattern="[0-9+]{10,15}" maxlength="15" placeholder="Ej: 04141234567" />
+          </div>
+        </div>
+
+        <!-- Monto y Referencia -->
+        <div class="fila-doble">
+          <div class="campo-doble">
+            <label for="montoPagado">Monto transferido ($):</label>
+            <input type="number" id="montoPagado" name="montoPagado" min="1" required placeholder="100" />
+          </div>
+          <div class="campo-doble">
+            <label for="referencia">Referencia:</label>
+            <input type="text" id="referencia" name="referencia" required pattern="[0-9]{4,6}" maxlength="6" placeholder="1234" />
+          </div>
+        </div>
+
+        <h2>Selecciona 15 números (máximo)</h2>
+        <div class="grilla-animalitos" id="grillaAnimalitos"></div>
+
+        <h2>Tu jugada <span id="contador">(0 / 15)</span>:</h2>
+        <div class="carton-jugada" id="cartonJugada"></div>
+
+        <p class="aviso">⚠️ Las jugadas, una vez enviadas, <strong>no se pueden modificar</strong>. Revisa bien antes de enviar.</p>
+
+        <button type="submit" id="btnEnviar" disabled>Enviar Jugada</button>
+
+        <div class="contador-jugadas" id="contadorJugadas">
+          <span id="textoContador">Ingresa tu monto para comenzar</span>
+          <div id="progresoContador" class="progreso-contenedor">
+            <div class="progreso-bar" id="progresoBar"></div>
+          </div>
+        </div>
+      </form>
+
+      <footer class="footer-info">
+        <p>💰 Costo por jugada: $<span id="costoJugada">20</span></p>
+        <p>⏰ Horario de recepción: 8:00 AM - 6:00 PM</p>
+      </footer>
+    </div>
+
+    <!-- PÁGINA RESUMEN -->
+    <div id="paginaResumen" class="pagina-resumen" style="display: none;">
+      <header>
+        <h1>✅ ¡Jugadas Enviadas con Éxito!</h1>
+        <p class="subtitulo">Resumen de tus jugadas realizadas</p>
+      </header>
+
+      <div class="resumen-contenido">
+        <div class="resumen-jugadas" id="resumenJugadas"></div>
+
+        <div class="resumen-acciones">
+          <button type="button" id="btnContinuar" class="btn-continuar">🔄 Hacer Nueva Jugada</button>
+          <button type="button" id="btnDescargarPDFResumen" class="btn-descargar">📄 Descargar Comprobante</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
