@@ -31,6 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let maxJugadasPermitidas = 0;
   let seleccionados = [];
   let jugadasActuales = [];
+  let montoTotal = 0;
 
   // LISTA DE ANIMALES
   const emojis = ['🐶', '🐱', '🐹', '🐰', '🐭', '🦊', '🐬', '🐼', '🐘', '🐯', '🦁', '🐮', '🐷', '🦓', '🐵', '🐔', '🐢', '🐓', '🦆', '🦅', '🦉', '🐊', '🐺', '🦀', '🐴'];
@@ -59,6 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
       elementos.btnEnviar.disabled = true;
     } else {
       maxJugadasPermitidas = monto / COSTO_POR_JUGADA;
+      montoTotal = monto; // Guardar el monto total solo para cálculo interno
       actualizarContadorJugadas();
     }
     actualizarBarraProgreso();
@@ -165,7 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const jugadaCompleta = {
       nombre: jugada.nombre || '',
       telefono: jugada.telefono || '',
-      monto: jugada.monto || '',
+      monto: COSTO_POR_JUGADA, // SOLO guardar el costo individual por jugada
       referencia: jugada.referencia || '',
       animalitos: [...jugada.animalitos],
       fecha: jugada.fecha || new Date().toISOString(),
@@ -212,8 +214,8 @@ document.addEventListener('DOMContentLoaded', () => {
           <span>${primeraJugada.telefono}</span>
         </div>
         <div class="dato-item">
-          <strong>Monto Transferido:</strong>
-          <span>$${primeraJugada.monto}</span>
+          <strong>Monto Total Transferido:</strong>
+          <span>$${montoTotal}</span>
         </div>
         <div class="dato-item">
           <strong>Referencia:</strong>
@@ -222,6 +224,14 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="dato-item">
           <strong>Fecha:</strong>
           <span>${new Date(primeraJugada.fecha).toLocaleString()}</span>
+        </div>
+        <div class="dato-item">
+          <strong>Costo por Jugada:</strong>
+          <span>$${COSTO_POR_JUGADA}</span>
+        </div>
+        <div class="dato-item">
+          <strong>Total de Jugadas:</strong>
+          <span>${jugadasActuales.length}</span>
         </div>
       </div>
     `;
@@ -260,6 +270,7 @@ document.addEventListener('DOMContentLoaded', () => {
     jugadasEnviadas = 0;
     maxJugadasPermitidas = 0;
     jugadasActuales = [];
+    montoTotal = 0;
     
     elementos.grilla.querySelectorAll('.animalito-btn').forEach(b => b.classList.remove('seleccionado'));
     actualizarCarton();
@@ -306,11 +317,13 @@ document.addEventListener('DOMContentLoaded', () => {
       
       doc.text(`Nombre y Apellido: ${primeraJugada.nombre}`, 20, 40);
       doc.text(`Teléfono: ${primeraJugada.telefono}`, 20, 50);
-      doc.text(`Monto Transferido: $${primeraJugada.monto}`, 20, 60);
+      doc.text(`Monto Total Transferido: $${montoTotal}`, 20, 60);
       doc.text(`Referencia: ${primeraJugada.referencia}`, 20, 70);
-      doc.text(`Fecha: ${new Date(primeraJugada.fecha).toLocaleString()}`, 20, 80);
+      doc.text(`Costo por Jugada: $${COSTO_POR_JUGADA}`, 20, 80);
+      doc.text(`Total de Jugadas: ${jugadasActuales.length}`, 20, 90);
+      doc.text(`Fecha: ${new Date(primeraJugada.fecha).toLocaleString()}`, 20, 100);
       
-      let yPosition = 100;
+      let yPosition = 120;
       doc.setFontSize(14);
       doc.setTextColor(25, 118, 210);
       doc.text('Jugadas Realizadas', 20, yPosition);
@@ -432,7 +445,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const jugada = {
       nombre: nombre,
       telefono: telefono,
-      monto: elementos.montoInput.value,
       referencia: referencia,
       animalitos: [...seleccionados],
       fecha: new Date().toISOString()
