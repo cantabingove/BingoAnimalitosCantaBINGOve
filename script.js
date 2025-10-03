@@ -32,6 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let seleccionados = [];
   let jugadasActuales = [];
   let montoTotal = 0;
+  let enviandoJugada = false;
 
   // LISTA DE ANIMALES
   const emojis = ['🐶', '🐱', '🐹', '🐰', '🐭', '🦊', '🐬', '🐼', '🐘', '🐯', '🦁', '🐮', '🐷', '🦓', '🐵', '🐔', '🐢', '🐓', '🦆', '🦅', '🦉', '🐊', '🐺', '🦀', '🐴'];
@@ -60,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
       elementos.btnEnviar.disabled = true;
     } else {
       maxJugadasPermitidas = monto / COSTO_POR_JUGADA;
-      montoTotal = monto; // Guardar el monto total solo para cálculo interno
+      montoTotal = monto;
       actualizarContadorJugadas();
     }
     actualizarBarraProgreso();
@@ -148,7 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const nombreValido = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,25}$/.test(nombre);
     const telefonoValido = /^[\d+]{10,15}$/.test(telefono);
-    const referenciaValida = /^\d{4,6}$/.test(referencia);
+    const referenciaValida = /^\d{4}$/.test(referencia);
     const montoValido = maxJugadasPermitidas > 0;
     const puedeJugar = jugadasEnviadas < maxJugadasPermitidas;
     const seleccionCompleta = seleccionados.length === 15;
@@ -160,35 +161,64 @@ document.addEventListener('DOMContentLoaded', () => {
       montoValido && 
       puedeJugar && 
       seleccionCompleta
-    );
+    ) || enviandoJugada;
+  }
+
+  function prepararEnvio() {
+    enviandoJugada = true;
+    elementos.btnEnviar.disabled = true;
+    elementos.btnEnviar.classList.add('procesando');
+    elementos.btnEnviar.textContent = '🔄 Enviando...';
+  }
+
+  function finalizarEnvio() {
+    enviandoJugada = false;
+    elementos.btnEnviar.classList.remove('procesando');
+    elementos.btnEnviar.textContent = 'Enviar Jugada';
+    validarFormulario();
+  }
+
+  // FUNCIÓN CLAVE: Formatear referencia con ceros ANTES de enviar
+  function formatearReferencia(referencia) {
+    return referencia.padStart(4, '0');
   }
 
   async function guardarJugada(jugada) {
+    // Asegurar formato de referencia y teléfono como TEXTO
+    const referenciaFormateada = jugada.referencia.padStart(4, '0');
+    const telefonoFormateado = jugada.telefono.toString();
+    
+    // AGREGAR PREFIJOS PARA FORZAR TEXTO EN GOOGLE SHEETS
     const jugadaCompleta = {
       nombre: jugada.nombre || '',
-      telefono: jugada.telefono || '',
-      monto: COSTO_POR_JUGADA, // SOLO guardar el costo individual por jugada
-      referencia: jugada.referencia || '',
+      telefono: `📞${telefonoFormateado}`, // Prefijo emoji para forzar texto
+      monto: COSTO_POR_JUGADA,
+      referencia: `🔢${referenciaFormateada}`, // Prefijo emoji para forzar texto
       animalitos: [...jugada.animalitos],
       fecha: jugada.fecha || new Date().toISOString(),
       numeroJugada: jugadasActuales.length + 1
     };
     
-    // Guardar localmente
-    jugadasActuales.push(jugadaCompleta);
+    // Guardar localmente (sin los prefijos para mostrar limpio)
+    const jugadaLocal = {
+      ...jugadaCompleta,
+      telefono: telefonoFormateado,
+      referencia: referenciaFormateada
+    };
+    jugadasActuales.push(jugadaLocal);
     
-    // Guardar en Google Sheets - MÉTODO ORIGINAL SIN HEADERS
+    // Guardar en Google Sheets - MÉTODO ORIGINAL
     try {
       await fetch(GOOGLE_SCRIPT_URL, {
         method: 'POST',
         body: JSON.stringify(jugadaCompleta)
       });
-      console.log('✅ Jugada enviada a Google Sheets');
+      console.log('✅ Jugada enviada a Google Sheets con referencias protegidas');
     } catch (error) {
       console.log('⚠️ No se pudo guardar en Google Sheets, pero está guardado localmente');
     }
     
-    return jugadaCompleta;
+    return jugadaLocal;
   }
 
   function mostrarResumen() {
@@ -200,6 +230,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const primeraJugada = jugadasActuales[0];
+    
+    // FUNCIÓN PARA LIMPIAR CARACTERES ESPECIALES AL MOSTRAR
+    const limpiarValor = (valor) => {
+      if (typeof valor === 'string') {
+        return valor.replace(/[🔢📞]/g, '');
+      }
+      return valor;
+    };
+
     const datosUsuario = document.createElement('div');
     datosUsuario.className = 'datos-usuario';
     datosUsuario.innerHTML = `
@@ -211,7 +250,7 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
         <div class="dato-item">
           <strong>Teléfono:</strong>
-          <span>${primeraJugada.telefono}</span>
+          <span>${limpiarValor(primeraJugada.telefono)}</span>
         </div>
         <div class="dato-item">
           <strong>Monto Total Transferido:</strong>
@@ -219,7 +258,7 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
         <div class="dato-item">
           <strong>Referencia:</strong>
-          <span>${primeraJugada.referencia}</span>
+          <span>${limpiarValor(primeraJugada.referencia)}</span>
         </div>
         <div class="dato-item">
           <strong>Fecha:</strong>
@@ -271,6 +310,7 @@ document.addEventListener('DOMContentLoaded', () => {
     maxJugadasPermitidas = 0;
     jugadasActuales = [];
     montoTotal = 0;
+    enviandoJugada = false;
     
     elementos.grilla.querySelectorAll('.animalito-btn').forEach(b => b.classList.remove('seleccionado'));
     actualizarCarton();
@@ -315,10 +355,18 @@ document.addEventListener('DOMContentLoaded', () => {
       doc.setFontSize(12);
       doc.setTextColor(0, 0, 0);
       
+      // También limpiar los valores en el PDF
+      const limpiarValor = (valor) => {
+        if (typeof valor === 'string') {
+          return valor.replace(/[🔢📞]/g, '');
+        }
+        return valor;
+      };
+
       doc.text(`Nombre y Apellido: ${primeraJugada.nombre}`, 20, 40);
-      doc.text(`Teléfono: ${primeraJugada.telefono}`, 20, 50);
+      doc.text(`Teléfono: ${limpiarValor(primeraJugada.telefono)}`, 20, 50);
       doc.text(`Monto Total Transferido: $${montoTotal}`, 20, 60);
-      doc.text(`Referencia: ${primeraJugada.referencia}`, 20, 70);
+      doc.text(`Referencia: ${limpiarValor(primeraJugada.referencia)}`, 20, 70);
       doc.text(`Costo por Jugada: $${COSTO_POR_JUGADA}`, 20, 80);
       doc.text(`Total de Jugadas: ${jugadasActuales.length}`, 20, 90);
       doc.text(`Fecha: ${new Date(primeraJugada.fecha).toLocaleString()}`, 20, 100);
@@ -360,7 +408,7 @@ document.addEventListener('DOMContentLoaded', () => {
         yPosition = lineHeight + 8;
       });
       
-      doc.save(`comprobante_${primeraJugada.referencia}.pdf`);
+      doc.save(`comprobante_${limpiarValor(primeraJugada.referencia)}.pdf`);
       
     } catch (error) {
       console.error('Error al generar comprobante:', error);
@@ -424,7 +472,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // Event listeners del formulario
   elementos.nombreInput.addEventListener('input', validarFormulario);
   elementos.telefonoInput.addEventListener('input', validarFormulario);
-  elementos.referenciaInput.addEventListener('input', validarFormulario);
+  elementos.referenciaInput.addEventListener('input', function() {
+    if (this.value.length > 4) {
+      this.value = this.value.slice(0, 4);
+    }
+    validarFormulario();
+  });
   elementos.montoInput.addEventListener('input', () => {
     calcularJugadasPermitidas();
     validarFormulario();
@@ -433,39 +486,57 @@ document.addEventListener('DOMContentLoaded', () => {
   elementos.formulario.addEventListener('submit', async (e) => {
     e.preventDefault();
     
+    if (enviandoJugada) {
+      console.log('⏳ Ya se está enviando una jugada, espera...');
+      return;
+    }
+
     const nombre = elementos.nombreInput.value.trim();
     const telefono = elementos.telefonoInput.value;
-    const referencia = elementos.referenciaInput.value;
+    let referencia = elementos.referenciaInput.value;
 
     if (seleccionados.length !== 15) {
       alert('Debes seleccionar exactamente 15 números.');
       return;
     }
 
+    prepararEnvio();
+
+    // FORMATEAR REFERENCIA ANTES DE ENVIAR
+    referencia = formatearReferencia(referencia);
+
     const jugada = {
       nombre: nombre,
       telefono: telefono,
-      referencia: referencia,
+      referencia: referencia, // YA FORMATEADA
       animalitos: [...seleccionados],
       fecha: new Date().toISOString()
     };
 
-    await guardarJugada(jugada);
-    jugadasEnviadas++;
-    
-    if (jugadasEnviadas === 1) {
-      bloquearCampos();
-    }
-    
-    if (jugadasEnviadas >= maxJugadasPermitidas) {
-      mostrarResumen();
-    } else {
-      alert(`✅ Jugada ${jugadasEnviadas} enviada con éxito! Preparando siguiente jugada...`);
-      seleccionados = [];
-      elementos.grilla.querySelectorAll('.animalito-btn').forEach(b => b.classList.remove('seleccionado'));
-      actualizarCarton();
-      actualizarContadorJugadas();
-      validarFormulario();
+    try {
+      await guardarJugada(jugada);
+      jugadasEnviadas++;
+      
+      if (jugadasEnviadas === 1) {
+        bloquearCampos();
+      }
+      
+      if (jugadasEnviadas >= maxJugadasPermitidas) {
+        mostrarResumen();
+        finalizarEnvio();
+      } else {
+        alert(`✅ Jugada ${jugadasEnviadas} enviada con éxito! Preparando siguiente jugada...`);
+        seleccionados = [];
+        elementos.grilla.querySelectorAll('.animalito-btn').forEach(b => b.classList.remove('seleccionado'));
+        actualizarCarton();
+        actualizarContadorJugadas();
+        validarFormulario();
+        finalizarEnvio();
+      }
+    } catch (error) {
+      console.error('Error al enviar jugada:', error);
+      alert('Error al enviar jugada. Por favor, intenta de nuevo.');
+      finalizarEnvio();
     }
   });
 
@@ -475,4 +546,8 @@ document.addEventListener('DOMContentLoaded', () => {
   
   console.log('🚀 Aplicación iniciada correctamente');
   console.log('📊 Integración con Google Sheets: ACTIVADA');
+  console.log('🛡️ Protección contra múltiples clics: ACTIVADA');
+  console.log('🔢 Formateo de referencias con ceros: ACTIVADO');
+  console.log('📞 Prefijos emoji para teléfonos y referencias: ACTIVADO');
 });
+
