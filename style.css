@@ -27,7 +27,7 @@ body {
   color: var(--text-primary);
   min-height: 100vh;
   line-height: 1.4;
-  font-size: 14px;
+  font-size: 16px; /* Aumentado para mejor legibilidad */
 }
 
 .contenedor {
@@ -39,28 +39,28 @@ body {
   box-shadow: var(--shadow);
 }
 
-/* HEADER COMPACTO */
+/* HEADER CON FUENTES MÁS GRANDES */
 header {
   text-align: center;
   margin-bottom: 18px;
   background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
   color: white;
-  padding: 16px;
+  padding: 20px; /* Más padding */
   border-radius: 14px;
 }
 
 h1 {
   color: white;
-  margin-bottom: 4px;
-  font-size: 1.6em;
-  font-weight: 600;
+  margin-bottom: 8px;
+  font-size: 2em; /* Aumentado de 1.6em */
+  font-weight: 700; /* Más negrita */
 }
 
 .subtitulo {
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 0.9em;
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 1.1em; /* Aumentado de 0.9em */
   margin: 0;
-  font-weight: 400;
+  font-weight: 500;
 }
 
 /* INSTRUCCIONES COMPACTAS */
@@ -70,7 +70,7 @@ h1 {
 
 .instrucciones details {
   background: rgba(227, 242, 253, 0.7);
-  padding: 10px 14px;
+  padding: 12px 16px;
   border-radius: 10px;
   border: 1.5px solid #bbdefb;
 }
@@ -79,7 +79,7 @@ h1 {
   cursor: pointer;
   font-weight: 600;
   color: var(--primary-color);
-  font-size: 0.9em;
+  font-size: 1em; /* Aumentado */
   list-style: none;
 }
 
@@ -89,10 +89,10 @@ h1 {
 }
 
 .instrucciones li {
-  margin-bottom: 4px;
+  margin-bottom: 6px;
   color: var(--text-secondary);
-  font-size: 0.85em;
-  line-height: 1.3;
+  font-size: 0.9em; /* Aumentado */
+  line-height: 1.4;
 }
 
 /* FORMULARIO COMPACTO */
@@ -105,8 +105,8 @@ label {
   margin-top: 12px;
   font-weight: 600;
   color: var(--text-primary);
-  font-size: 0.9em;
-  margin-bottom: 4px;
+  font-size: 1em; /* Aumentado */
+  margin-bottom: 6px;
 }
 
 .fila-doble {
@@ -124,10 +124,10 @@ label {
 
 .campo-doble input {
   width: 100%;
-  padding: 8px 10px;
+  padding: 10px 12px; /* Más padding */
   border: 1.5px solid var(--border);
   border-radius: 8px;
-  font-size: 0.9em;
+  font-size: 1em; /* Aumentado */
   text-align: center;
   background: var(--surface);
   transition: all 0.2s ease;
@@ -142,17 +142,17 @@ label {
 
 .mensaje-error {
   color: var(--error);
-  font-size: 0.75em;
-  margin-top: 3px;
+  font-size: 0.85em; /* Aumentado */
+  margin-top: 4px;
   font-weight: 500;
   display: none;
 }
 
-/* GRILLA DE ANIMALITOS COMPACTA */
+/* GRILLA DE ANIMALITOS CON SELECCIÓN MÁS VISIBLE */
 .grilla-animalitos {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 5px;
+  gap: 6px; /* Más espacio */
   margin: 12px 0;
   padding: 12px;
   background: linear-gradient(135deg, #f8f9fa, #e9ecef);
@@ -163,15 +163,15 @@ label {
 .animalito-btn {
   aspect-ratio: 1 / 1;
   min-height: 0;
-  border: 1.5px solid var(--border);
-  border-radius: 6px;
+  border: 2px solid var(--border); /* Borde más grueso */
+  border-radius: 8px;
   background: var(--surface);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
 }
@@ -179,31 +179,52 @@ label {
 .animalito-btn:hover {
   background: rgba(227, 242, 253, 0.6);
   border-color: var(--primary-light);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
 }
 
+/* MEJORA SIGNIFICATIVA EN LA VISUALIZACIÓN DE SELECCIONADOS */
 .animalito-btn.seleccionado {
-  border-color: var(--primary-color);
-  background: rgba(227, 242, 253, 0.8);
-  transform: scale(1.02);
-  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.2);
+  border: 3px solid var(--primary-color); /* Borde más grueso */
+  background: linear-gradient(135deg, rgba(25, 118, 210, 0.15), rgba(66, 165, 245, 0.1));
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(25, 118, 210, 0.3); /* Sombra más pronunciada */
+  animation: pulse 2s infinite; /* Efecto de pulso */
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 4px 12px rgba(25, 118, 210, 0.3); }
+  50% { box-shadow: 0 4px 20px rgba(25, 118, 210, 0.5); }
+  100% { box-shadow: 0 4px 12px rgba(25, 118, 210, 0.3); }
+}
+
+.animalito-btn.seleccionado::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(25, 118, 210, 0.1);
+  z-index: 1;
 }
 
 .animalito-btn.seleccionado::after {
   content: '✓';
   position: absolute;
-  top: 2px;
-  right: 2px;
+  top: 3px;
+  right: 3px;
   background: var(--primary-color);
   color: white;
-  width: 14px;
-  height: 14px;
+  width: 18px; /* Más grande */
+  height: 18px; /* Más grande */
   border-radius: 50%;
-  font-size: 0.7em;
+  font-size: 0.8em; /* Más grande */
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: bold;
+  z-index: 3;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
 /* IMÁGENES COMPACTAS PARA BOTONES PEQUEÑOS */
@@ -211,46 +232,51 @@ label {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.animalito-btn.seleccionado .imagen-animalito {
+  transform: scale(1.1); /* Imagen más grande cuando está seleccionada */
 }
 
 .texto-animalito {
   position: relative;
   z-index: 2;
   background: rgba(255, 255, 255, 0.95);
-  padding: 2px 4px;
-  border-radius: 3px;
-  margin: 1px;
+  padding: 3px 5px; /* Más padding */
+  border-radius: 4px;
+  margin: 2px;
   font-weight: 600;
   backdrop-filter: blur(2px);
 }
 
 .nombre-animalito {
-  font-size: 0.6em;
+  font-size: 0.7em; /* Aumentado */
   color: var(--text-primary);
 }
 
 .numero-animalito {
-  font-size: 0.55em;
+  font-size: 0.65em; /* Aumentado */
   color: var(--text-secondary);
   font-weight: 500;
 }
 
 .emoji-fallback {
-  font-size: 1.1em;
+  font-size: 1.3em; /* Aumentado */
   z-index: 2;
   position: relative;
 }
 
-/* CARTÓN DE JUGADA MÁS PEQUEÑO QUE LA GRILLA */
+/* CARTÓN DE JUGADA MÁS VISIBLE */
 .carton-jugada {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 3px;
-  margin: 10px 0;
-  min-height: 70px;
-  padding: 10px;
+  gap: 4px; /* Más espacio */
+  margin: 12px 0;
+  min-height: 80px; /* Más alto */
+  padding: 12px; /* Más padding */
   background: linear-gradient(135deg, #f0f8ff, #e3f2fd);
-  border: 1.5px dashed var(--primary-light);
+  border: 2px dashed var(--primary-light); /* Borde más grueso */
   border-radius: 10px;
   align-content: start;
 }
@@ -261,15 +287,20 @@ label {
   align-items: center;
   justify-content: center;
   background: var(--surface);
-  border: 1.5px solid var(--secondary-color);
-  border-radius: 4px;
+  border: 2px solid var(--secondary-color); /* Borde más grueso */
+  border-radius: 6px; /* Más redondeado */
   padding: 0;
-  font-size: 0.6em;
+  font-size: 0.7em; /* Aumentado */
   text-align: center;
   color: var(--text-primary);
   font-weight: 600;
   position: relative;
   overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.casilla-jugada:hover {
+  transform: scale(1.05);
 }
 
 .imagen-carton {
@@ -282,90 +313,115 @@ label {
   position: relative;
   z-index: 2;
   background: rgba(255, 255, 255, 0.95);
-  padding: 1px 3px;
-  border-radius: 2px;
+  padding: 2px 4px;
+  border-radius: 3px;
   font-weight: 600;
-  font-size: 0.65em;
+  font-size: 0.7em; /* Aumentado */
 }
 
 .emoji-carton {
-  font-size: 0.75em;
+  font-size: 0.9em; /* Aumentado */
 }
 
 /* CONTADORES COMPACTOS */
 #contador {
   background: linear-gradient(135deg, var(--accent-color), #f06292);
   color: white;
-  padding: 2px 8px;
-  border-radius: 10px;
-  font-size: 0.75em;
+  padding: 4px 10px; /* Más padding */
+  border-radius: 12px;
+  font-size: 0.9em; /* Aumentado */
   font-weight: 600;
 }
 
 .aviso {
   text-align: center;
-  margin: 14px 0;
+  margin: 16px 0;
   color: var(--error);
   font-weight: 600;
-  font-size: 0.85em;
-  padding: 8px;
+  font-size: 0.95em; /* Aumentado */
+  padding: 10px; /* Más padding */
   background: rgba(255, 235, 238, 0.7);
-  border-radius: 6px;
-  border-left: 3px solid var(--error);
+  border-radius: 8px;
+  border-left: 4px solid var(--error); /* Borde más grueso */
 }
 
-/* BOTONES PRINCIPALES COMPACTOS */
+/* BOTONES PRINCIPALES CON PROTECCIÓN CONTRA MÚLTIPLES CLICS */
 button {
   width: 100%;
-  padding: 10px 14px;
+  padding: 12px 16px; /* Más padding */
   background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
   color: white;
   border: none;
   border-radius: 8px;
-  font-size: 0.9em;
+  font-size: 1em; /* Aumentado */
   font-weight: 600;
   cursor: pointer;
   margin-top: 16px;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
 button:hover:not(:disabled) {
   background: linear-gradient(135deg, #1565c0, #1e88e5);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(25, 118, 210, 0.3);
 }
 
 button:disabled {
   background: #bdbdbd;
   cursor: not-allowed;
   transform: none;
+  opacity: 0.7;
+}
+
+button.procesando {
+  background: linear-gradient(135deg, #ff9800, #ff5722);
+  cursor: wait;
+}
+
+button.procesando::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% { left: -100%; }
+  100% { left: 100%; }
 }
 
 /* CONTADOR DE JUGADAS COMPACTO */
 .contador-jugadas {
   text-align: center;
-  margin-top: 12px;
+  margin-top: 16px;
   font-weight: 600;
   color: var(--primary-color);
-  font-size: 0.85em;
-  padding: 8px;
+  font-size: 0.95em; /* Aumentado */
+  padding: 10px; /* Más padding */
   background: rgba(227, 242, 253, 0.6);
-  border-radius: 6px;
-  border: 1.5px solid #bbdefb;
+  border-radius: 8px;
+  border: 2px solid #bbdefb; /* Borde más grueso */
 }
 
 #textoContador {
   display: block;
-  margin-bottom: 4px;
-  font-size: 0.8em;
+  margin-bottom: 6px;
+  font-size: 0.9em; /* Aumentado */
 }
 
 .progreso-contenedor {
   width: 100%;
-  height: 5px;
+  height: 6px; /* Más alto */
   background: rgba(224, 224, 224, 0.6);
   border-radius: 3px;
   overflow: hidden;
-  margin-top: 4px;
+  margin-top: 6px;
 }
 
 .progreso-bar {
@@ -379,10 +435,10 @@ button:disabled {
 /* BOTONES DE ACCIÓN COMPACTOS */
 .botones-accion {
   display: flex;
-  gap: 8px;
-  margin: 18px 0 12px 0;
-  padding: 12px;
-  border-top: 1.5px dashed #dee2e6;
+  gap: 10px; /* Más espacio */
+  margin: 20px 0 16px 0;
+  padding: 14px; /* Más padding */
+  border-top: 2px dashed #dee2e6; /* Borde más grueso */
   background: rgba(248, 249, 250, 0.6);
   border-radius: 10px;
 }
@@ -391,8 +447,8 @@ button:disabled {
   flex: 1;
   margin-top: 0;
   width: auto;
-  padding: 8px 12px;
-  font-size: 0.85em;
+  padding: 10px 14px; /* Más padding */
+  font-size: 0.95em; /* Aumentado */
   font-weight: 600;
 }
 
@@ -404,22 +460,23 @@ button:disabled {
   background: linear-gradient(135deg, #dc3545, #e83e8c);
 }
 
-/* FOOTER COMPACTO */
+/* FOOTER CON FUENTES MÁS GRANDES */
 .footer-info {
-  margin-top: 18px;
-  padding-top: 12px;
-  border-top: 1.5px solid var(--border);
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 2px solid var(--border); /* Borde más grueso */
   text-align: center;
   color: var(--text-secondary);
-  font-size: 0.8em;
+  font-size: 1em; /* Aumentado de 0.8em */
   background: rgba(248, 249, 250, 0.6);
-  padding: 12px;
+  padding: 16px; /* Más padding */
   border-radius: 8px;
 }
 
 .footer-info p {
-  margin: 3px 0;
+  margin: 6px 0; /* Más margen */
   font-weight: 500;
+  font-size: 1.05em; /* Aumentado */
 }
 
 /* PÁGINA RESUMEN COMPACTA */
@@ -439,67 +496,67 @@ button:disabled {
 
 .datos-usuario {
   background: linear-gradient(135deg, rgba(227, 242, 253, 0.7), rgba(240, 248, 255, 0.7));
-  padding: 16px;
+  padding: 20px; /* Más padding */
   border-radius: 12px;
-  margin-bottom: 16px;
-  border: 1.5px solid var(--primary-light);
+  margin-bottom: 20px;
+  border: 2px solid var(--primary-light); /* Borde más grueso */
 }
 
 .datos-usuario h3 {
   color: var(--primary-color);
-  margin-bottom: 12px;
+  margin-bottom: 16px;
   text-align: center;
-  font-size: 1em;
+  font-size: 1.2em; /* Aumentado */
   font-weight: 600;
 }
 
 .datos-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 6px;
+  gap: 8px; /* Más espacio */
 }
 
 .dato-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 6px 8px;
+  padding: 8px 10px; /* Más padding */
   background: var(--surface);
-  border-radius: 5px;
-  border-left: 3px solid var(--secondary-color);
+  border-radius: 6px;
+  border-left: 4px solid var(--secondary-color); /* Borde más grueso */
 }
 
 .dato-item strong {
   color: var(--text-primary);
-  font-size: 0.8em;
+  font-size: 0.9em; /* Aumentado */
 }
 
 .dato-item span {
   color: var(--text-secondary);
   font-weight: 500;
-  font-size: 0.8em;
+  font-size: 0.9em; /* Aumentado */
 }
 
 .tabla-resumen {
   width: 100%;
   border-collapse: collapse;
-  margin: 12px 0;
+  margin: 16px 0;
   background: var(--surface);
   border-radius: 8px;
   overflow: hidden;
-  font-size: 0.8em;
+  font-size: 0.9em; /* Aumentado */
 }
 
 .tabla-resumen th {
   background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
   color: white;
-  padding: 8px 10px;
+  padding: 10px 12px; /* Más padding */
   text-align: left;
   font-weight: 600;
 }
 
 .tabla-resumen td {
-  padding: 6px 10px;
+  padding: 8px 12px; /* Más padding */
   border-bottom: 1px solid rgba(224, 224, 224, 0.6);
 }
 
@@ -509,24 +566,25 @@ button:disabled {
 
 .resumen-acciones {
   display: flex;
-  gap: 8px;
+  gap: 10px; /* Más espacio */
   justify-content: center;
-  margin-top: 18px;
+  margin-top: 20px;
   flex-wrap: wrap;
 }
 
 .resumen-acciones button {
   margin-top: 0;
   width: auto;
-  padding: 8px 16px;
-  font-size: 0.85em;
-  min-width: 140px;
+  padding: 10px 18px; /* Más padding */
+  font-size: 0.95em; /* Aumentado */
+  min-width: 160px; /* Más ancho */
 }
 
 /* RESPONSIVE MEJORADO */
 @media (max-width: 768px) {
   body {
     padding: 8px;
+    font-size: 15px; /* Aumentado para móviles */
   }
   
   .contenedor {
@@ -535,38 +593,42 @@ button:disabled {
   }
   
   header {
-    padding: 14px;
+    padding: 16px;
     border-radius: 10px;
-    margin-bottom: 14px;
+    margin-bottom: 16px;
   }
   
   h1 {
-    font-size: 1.4em;
+    font-size: 1.8em; /* Aumentado para móviles */
+  }
+  
+  .subtitulo {
+    font-size: 1em; /* Aumentado para móviles */
   }
   
   .fila-doble {
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
     max-width: 100%;
   }
   
   .grilla-animalitos {
     grid-template-columns: repeat(4, 1fr);
-    gap: 4px;
+    gap: 5px;
     padding: 10px;
   }
   
   .carton-jugada {
     grid-template-columns: repeat(4, 1fr);
-    gap: 2px;
-    padding: 8px;
-    min-height: 60px;
+    gap: 3px;
+    padding: 10px;
+    min-height: 70px;
   }
   
   .botones-accion {
     flex-direction: column;
-    gap: 6px;
-    padding: 10px;
+    gap: 8px;
+    padding: 12px;
   }
   
   .datos-grid {
@@ -580,7 +642,11 @@ button:disabled {
   
   .resumen-acciones button {
     width: 100%;
-    max-width: 200px;
+    max-width: 220px;
+  }
+  
+  .footer-info p {
+    font-size: 0.95em; /* Ajustado para móviles */
   }
 }
 
@@ -598,19 +664,19 @@ button:disabled {
   }
   
   h1 {
-    font-size: 1.3em;
+    font-size: 1.6em; /* Aumentado para móviles pequeños */
   }
   
   .subtitulo {
-    font-size: 0.85em;
+    font-size: 0.95em; /* Aumentado para móviles pequeños */
   }
   
   .nombre-animalito {
-    font-size: 0.55em;
+    font-size: 0.65em;
   }
   
   .numero-animalito {
-    font-size: 0.5em;
+    font-size: 0.6em;
   }
 }
 
@@ -618,8 +684,8 @@ button:disabled {
 button:focus-visible,
 .animalito-btn:focus-visible,
 input:focus-visible {
-  outline: 2px solid var(--primary-color);
-  outline-offset: 1px;
+  outline: 3px solid var(--primary-color); /* Outline más grueso */
+  outline-offset: 2px;
 }
 
 /* ESTILOS ADICIONALES PARA MEJOR VISUAL */
@@ -634,4 +700,5 @@ input:focus-visible {
   color: var(--text-secondary);
   font-style: italic;
   padding: 20px;
+  font-size: 1em; /* Aumentado */
 }
