@@ -8,9 +8,143 @@
   <title>Jugar al Juego de los Animalitos</title>
   <link rel="stylesheet" href="style.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    /* ESTILOS PARA WHATSAPP */
+    
+    /* OPCIÓN 1: Botón flotante animado */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      z-index: 1000;
+      animation: pulse 2s infinite;
+    }
+    
+    .whatsapp-float a {
+      display: flex;
+      align-items: center;
+      background: #25D366;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 50px;
+      text-decoration: none;
+      box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+      transition: all 0.3s ease;
+    }
+    
+    .whatsapp-float a:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
+    }
+    
+    .whatsapp-float img {
+      width: 30px;
+      height: 30px;
+      margin-right: 8px;
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    
+    /* OPCIÓN 2: Banner informativo */
+    .whatsapp-banner {
+      background: linear-gradient(135deg, #25D366, #128C7E);
+      color: white;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 20px 0;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    
+    .whatsapp-banner a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 16px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 25px;
+      transition: all 0.3s ease;
+    }
+    
+    .whatsapp-banner a:hover {
+      background: rgba(255,255,255,0.3);
+      transform: translateY(-2px);
+    }
+    
+    .whatsapp-banner img {
+      width: 24px;
+      height: 24px;
+      margin-right: 8px;
+    }
+
+    /* Estilos para banner con imagen completa */
+    .whatsapp-banner-imagen {
+      text-align: center;
+      margin: 20px 0;
+      padding: 0;
+    }
+    
+    .whatsapp-banner-imagen a {
+      display: block;
+      transition: transform 0.3s ease;
+    }
+    
+    .whatsapp-banner-imagen a:hover {
+      transform: scale(1.02);
+    }
+    
+    .whatsapp-banner-imagen img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    
+    /* OPCIÓN 3: Sección en el footer */
+    .whatsapp-footer {
+      background: #075E54;
+      color: white;
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 20px;
+      text-align: center;
+    }
+    
+    .whatsapp-footer a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      display: inline-flex;
+      align-items: center;
+      margin: 5px 0;
+    }
+    
+    .whatsapp-footer img {
+      width: 20px;
+      height: 20px;
+      margin-right: 8px;
+    }
+  </style>
 </head>
 <body>
   <div class="contenedor">
+    <!-- OPCIÓN 1: Botón flotante con imagen local -->
+    <div class="whatsapp-float">
+      <a href="https://chat.whatsapp.com/https://chat.whatsapp.com/FTw331CZtxs6vDDQcLZaVS" target="_blank">
+        <!-- Si la imagen está en el mismo directorio -->
+        <!-- <img src="whatsapp-icon.png" alt="Únete a nuestro grupo de WhatsApp"> -->
+        <!-- Si la imagen está en carpeta images -->
+        <img src="images/whatsapp-icon.png" alt="Únete a nuestro grupo de WhatsApp">
+        Únete al Grupo
+      </a>
+    </div>
+
     <!-- FORMULARIO PRINCIPAL -->
     <div id="formularioContainer">
       <header>
@@ -18,22 +152,45 @@
         <p class="subtitulo">Completa tus datos y selecciona tus números de la suerte</p>
       </header>
 
+      <!-- OPCIÓN 2A: Banner con diseño CSS (recomendado) -->
+      <!-- <div class="whatsapp-banner"> -->
+      <!--  <!--<p>📢 <strong>¡Únete a nuestro grupo de WhatsApp!</strong></p> -->
+      <!--  <p>Recibe sorteos, anuncios y resultados en tiempo real</p> -->
+      <!--  <a href="https://chat.whatsapp.com/FTw331CZtxs6vDDQcLZaVS" target="_blank"> -->
+          <!-- <img src="whatsapp-icon.png" alt="WhatsApp"> -->
+          <!-- <img src="images/whatsapp-icon.png" alt="WhatsApp"> -->
+      <!--    Unirse al Grupo Oficial -->
+      <!--  </a> -->
+      <!-- </div> -->
+
+      <!-- OPCIÓN 2B: Banner con imagen completa (alternativa) -->
+       
+      <div class="whatsapp-banner-imagen">
+        <a href="https://chat.whatsapp.com/FTw331CZtxs6vDDQcLZaVS" target="_blank">
+          <img src="images/banner-whatsapp.png" alt="Únete a nuestro grupo de WhatsApp - Sorteos y Resultados">
+        </a>
+      </div>
+      
+
       <section class="instrucciones">
         <details>
-          <summary>📋 ¿Cómo jugar?</summary>
+          <summary>📋 ¿Cómo jugar? 👉🏻 Debes ser mayor de 18 años!🚨</summary>
           <ol>
+            <li>Haz tu pago móvil con los datos oficiales, búscalos en nuestro grupo  de WhatsApp enlace aquí en la página</li>
             <li>Completa tus datos personales</li>
-            <li>Ingresa el monto de tu pago móvil y ultimos 4 dígitos de tu referencia</li>
-            <li>Selecciona tus 15 animalitos preferidos(máximo)</li>
+            <li>Ingresa el monto total de tu pago móvil y ultimos 4 dígitos de tu referencia</li>
+            <li>La pagina te guiará en la cantidad de jugadas que puedes hacer</li>
+            <li>Selecciona tus 15 animalitos preferidos de la suerte!</li>
             <li>Revisa tu jugada y envía</li>
-            <li>¡Listo! Tu jugada será procesada</li>
+            <li>¡Listo! Tus jugadas serán procesadas y tu pago validado</li>
             <li>Guarda o anota tu recibo</li>
+            <li>Anota tus numeros/animalitos en un papel y espera el sorteo!</li>
           </ol>
         </details>
       </section>
 
       <form id="formularioJugada">
-        <!-- Nombre y Teléfono -->
+        <!-- [El resto de tu formulario permanece igual] -->
         <div class="fila-doble">
           <div class="campo-doble">
             <label for="nombre">Nombre y Apellido:</label>
@@ -45,7 +202,6 @@
           </div>
         </div>
 
-        <!-- Monto y Referencia -->
         <div class="fila-doble">
           <div class="campo-doble">
             <label for="montoPagado">Monto pago móvil (bs):</label>
@@ -75,6 +231,22 @@
         </div>
       </form>
 
+      <!-- OPCIÓN 3: Sección en el footer -->
+      <div class="whatsapp-footer">
+        <p><strong>📱 Mantente Informado</strong></p>
+        <p>Únete a nuestro grupo de WhatsApp para:</p>
+        <ul style="text-align: left; display: inline-block; margin: 10px 0;">
+          <li>✅ Resultados en vivo</li>
+          <li>✅ Sorteos especiales</li>
+          <li>✅ Anuncios importantes</li>
+        </ul>
+        <a href="https://chat.whatsapp.com/FTw331CZtxs6vDDQcLZaVS" target="_blank">
+          <!-- <img src="whatsapp-icon.png" alt="WhatsApp"> -->
+          <img src="images/whatsapp-icon.png" alt="WhatsApp">
+          Click aquí para unirte al grupo
+        </a>
+      </div>
+
       <footer class="footer-info">
         <p>💰 Costo por jugada: bs <span id="costoJugada">20</span></p>
         <p>⏰ Recepción de jugadas hasta las 8:30 PM Horario del Sorteo: 8:45 PM</p>
@@ -90,6 +262,17 @@
 
       <div class="resumen-contenido">
         <div class="resumen-jugadas" id="resumenJugadas"></div>
+
+        <!-- Banner también en la página de resumen -->
+        <div class="whatsapp-banner">
+          <p>🎉 <strong>¡Gracias por participar!</strong></p>
+          <p>Únete a nuestro grupo para ver los resultados en vivo</p>
+          <a href="https://chat.whatsapp.com/FTw331CZtxs6vDDQcLZaVS" target="_blank">
+            <!-- <img src="whatsapp-icon.png" alt="WhatsApp"> -->
+            <img src="images/whatsapp-icon.png" alt="WhatsApp">
+            Ver Resultados en Grupo
+          </a>
+        </div>
 
         <div class="resumen-acciones">
           <button type="button" id="btnContinuar" class="btn-continuar">🔄 Hacer Nueva Jugada</button>
