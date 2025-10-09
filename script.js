@@ -4,6 +4,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // === CONFIGURACIÓN ===
   const COSTO_POR_JUGADA = 20;
   const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw-Zh5K0OBodzlm3XjBjmaBez2otuDetKyMMgJa7Mp5jOHEMomcIONHFVObq4UZV5R0_A/exec';
+
+  // HORARIOS PERMITIDOS (Formato 24 horas) - HORA DE VENEZUELA (UTC-4)
+  const HORA_INICIO = '00:00:01';  // 12:00:01 AM
+  const HORA_FIN = '20:30:01';     // 08:30:01 PM
   // =====================
 
   // Elementos del DOM
@@ -37,6 +41,69 @@ document.addEventListener('DOMContentLoaded', () => {
   // LISTA DE ANIMALES
   const emojis = ['🐶', '🐱', '🐹', '🐰', '🐭', '🦊', '🐬', '🐼', '🐘', '🐯', '🦁', '🐮', '🐷', '🦓', '🐵', '🐔', '🐢', '🐓', '🦆', '🦅', '🦉', '🐊', '🐺', '🦀', '🐴'];
   const nombres = ["Perro", "Gato", "Hamster", "Conejo", "Capibara", "Zorro", "Delfín", "Panda", "Elefante", "Tigre", "León", "Vaca", "Cerdo", "Cebra", "Mono", "Gallina", "Tortuga", "Gallo", "Pato", "Águila", "Búho", "Caimán", "Lobo", "Cangrejo", "Caballo"];
+
+  // ========== FUNCIÓN DE CONTROL DE HORARIOS (VENEZUELA UTC-4) ==========
+
+  function obtenerHoraVenezuela() {
+    const ahora = new Date();
+    
+    // Venezuela es UTC-4 todo el año
+    const offsetVenezuela = -4 * 60; // en minutos
+    const offsetLocal = ahora.getTimezoneOffset(); // en minutos
+    
+    // Calcular la diferencia entre la zona horaria local y Venezuela
+    const diffMinutos = offsetLocal - offsetVenezuela;
+    
+    // Ajustar la hora a la zona horaria de Venezuela
+    const horaVenezuela = new Date(ahora.getTime() + diffMinutos * 60000);
+    
+    return horaVenezuela;
+  }
+
+  function estaEnHorarioPermitido() {
+    const horaVenezuela = obtenerHoraVenezuela();
+    const horaActual = horaVenezuela.toTimeString().split(' ')[0]; // Obtiene "HH:MM:SS"
+    
+    console.log(`🕐 Hora local: ${new Date().toTimeString().split(' ')[0]}`);
+    console.log(`🇻🇪 Hora Venezuela (UTC-4): ${horaActual}`);
+    console.log(`📅 Horario permitido: ${HORA_INICIO} - ${HORA_FIN}`);
+    
+    return horaActual >= HORA_INICIO && horaActual <= HORA_FIN;
+  }
+
+  function obtenerMensajeHorario() {
+    const enHorario = estaEnHorarioPermitido();
+    const horaVenezuela = obtenerHoraVenezuela();
+    const horaFormateada = horaVenezuela.toTimeString().split(' ')[0];
+    
+    if (!enHorario) {
+      return `⏰ Fuera de horario (${horaFormateada} VET). Recepción: ${HORA_INICIO} - ${HORA_FIN} VET`;
+    }
+    
+    return null; // null significa que está en horario
+  }
+
+  // Función opcional para mostrar la hora actual de Venezuela en la interfaz
+  function mostrarHoraVenezuela() {
+    const horaVenezuela = obtenerHoraVenezuela();
+    const opciones = { 
+      timeZone: 'America/Caracas',
+      hour12: false,
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    };
+    
+    const horaFormateada = horaVenezuela.toLocaleTimeString('es-VE', opciones);
+    console.log(`🇻🇪 Hora actual en Venezuela: ${horaFormateada} VET`);
+    
+    // Opcional: Mostrar en la interfaz si quieres
+    // Puedes agregar un elemento en el HTML para esto
+    const elementoHora = document.getElementById('horaVenezuela');
+    if (elementoHora) {
+      elementoHora.textContent = `Hora Venezuela: ${horaFormateada} VET`;
+    }
+  }
 
   // ========== FUNCIONES PRINCIPALES ==========
 
@@ -82,6 +149,17 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function actualizarContadorJugadas() {
+    // Verificar primero si está fuera de horario
+    const mensajeHorario = obtenerMensajeHorario();
+    if (mensajeHorario) {
+      elementos.textoContador.textContent = mensajeHorario;
+      elementos.textoContador.style.color = '#d32f2f';
+      return;
+    }
+    
+    // Si está en horario, mostrar contador normal
+    elementos.textoContador.style.color = '';
+    
     if (maxJugadasPermitidas === 0) {
       elementos.textoContador.textContent = 'Ingresa tu monto para comenzar';
     } else if (jugadasEnviadas < maxJugadasPermitidas) {
@@ -121,6 +199,9 @@ document.addEventListener('DOMContentLoaded', () => {
       img.alt = nombres[num - 1];
       img.className = 'imagen-carton';
       
+      // CORRECCIÓN: Guardar referencia a casilla en una variable local
+      const casillaRef = casilla;
+      
       img.onerror = function() {
         this.style.display = 'none';
         const fallback = document.createElement('div');
@@ -130,11 +211,11 @@ document.addEventListener('DOMContentLoaded', () => {
           ${nombres[num - 1]}<br>
           <small>${num}</small>
         `;
-        casilla.appendChild(fallback);
+        casillaRef.appendChild(fallback); // Usar casillaRef en lugar de casilla
       };
       
       img.onload = function() {
-        casilla.appendChild(img);
+        casillaRef.appendChild(img); // Usar casillaRef en lugar de casilla
       };
       
       elementos.cartonJugada.appendChild(casilla);
@@ -153,7 +234,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const montoValido = maxJugadasPermitidas > 0;
     const puedeJugar = jugadasEnviadas < maxJugadasPermitidas;
     const seleccionCompleta = seleccionados.length === 15;
+    
+    // VERIFICAR HORARIO
+    const mensajeHorario = obtenerMensajeHorario();
+    const enHorarioPermitido = mensajeHorario === null;
 
+    if (mensajeHorario) {
+      // Si está fuera de horario, mostrar mensaje y desactivar botón
+      elementos.textoContador.textContent = mensajeHorario;
+      elementos.textoContador.style.color = '#d32f2f';
+      elementos.btnEnviar.disabled = true;
+      return;
+    }
+
+    // Si está en horario, validar normalmente
     elementos.btnEnviar.disabled = !(
       nombreValido && 
       telefonoValido && 
@@ -162,6 +256,9 @@ document.addEventListener('DOMContentLoaded', () => {
       puedeJugar && 
       seleccionCompleta
     ) || enviandoJugada;
+    
+    // Restaurar color normal del texto
+    elementos.textoContador.style.color = '';
   }
 
   function prepararEnvio() {
@@ -439,6 +536,9 @@ document.addEventListener('DOMContentLoaded', () => {
     img.alt = nombres[i - 1];
     img.className = 'imagen-animalito';
     
+    // CORRECCIÓN: Usar imgContainer directamente en lugar de variable externa
+    const imgContainerRef = imgContainer;
+    
     img.onerror = function() {
       this.style.display = 'none';
       
@@ -454,14 +554,14 @@ document.addEventListener('DOMContentLoaded', () => {
       numeroElement.className = 'texto-animalito numero-animalito';
       numeroElement.textContent = i;
       
-      imgContainer.innerHTML = '';
-      imgContainer.appendChild(fallback);
-      imgContainer.appendChild(nombreElement);
-      imgContainer.appendChild(numeroElement);
+      imgContainerRef.innerHTML = '';
+      imgContainerRef.appendChild(fallback);
+      imgContainerRef.appendChild(nombreElement);
+      imgContainerRef.appendChild(numeroElement);
     };
     
     img.onload = function() {
-      imgContainer.appendChild(img);
+      imgContainerRef.appendChild(img);
     };
     
     btn.appendChild(imgContainer);
@@ -485,6 +585,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   elementos.formulario.addEventListener('submit', async (e) => {
     e.preventDefault();
+    
+    // VERIFICAR HORARIO ANTES DE ENVIAR
+    const mensajeHorario = obtenerMensajeHorario();
+    if (mensajeHorario) {
+      alert(`❌ No se puede enviar la jugada:\n${mensajeHorario}`);
+      return;
+    }
     
     if (enviandoJugada) {
       console.log('⏳ Ya se está enviando una jugada, espera...');
@@ -544,10 +651,14 @@ document.addEventListener('DOMContentLoaded', () => {
   calcularJugadasPermitidas();
   validarFormulario();
   
+  // Iniciar el reloj de Venezuela
+  setInterval(mostrarHoraVenezuela, 60000); // Actualizar cada minuto
+  mostrarHoraVenezuela(); // Llamar inmediatamente
+  
   console.log('🚀 Aplicación iniciada correctamente');
   console.log('📊 Integración con Google Sheets: ACTIVADA');
   console.log('🛡️ Protección contra múltiples clics: ACTIVADA');
   console.log('🔢 Formateo de referencias con ceros: ACTIVADO');
   console.log('📞 Prefijos emoji para teléfonos y referencias: ACTIVADO');
+  console.log('🇻🇪 Control de horarios Venezuela (UTC-4): ACTIVADO');
 });
-
