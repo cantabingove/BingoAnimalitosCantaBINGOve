@@ -702,3 +702,27 @@ input:focus-visible {
   padding: 20px;
   font-size: 1em; /* Aumentado */
 }
+
+/* Estilo para el mensaje de hora de Venezuela */
+#horaVenezuela {
+  text-align: center;
+  font-size: 0.9em;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 8px 0;
+  padding: 6px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  font-weight: 500;
+}
+/* Estilo para el reloj de Venezuela */
+#horaVenezuela {
+  text-align: center;
+  font-size: 0.9em;
+  color: rgba(255,255,255,0.9);
+  margin: 8px 0;
+  padding: 6px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 6px;
+  font-weight: 500;
+  backdrop-filter: blur(5px);
+}
