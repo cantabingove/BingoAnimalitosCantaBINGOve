@@ -6,8 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw-Zh5K0OBodzlm3XjBjmaBez2otuDetKyMMgJa7Mp5jOHEMomcIONHFVObq4UZV5R0_A/exec';
 
   // HORARIOS PERMITIDOS (Formato 24 horas) - HORA DE VENEZUELA (UTC-4)
-  const HORA_INICIO = '00:00:01';  // 12:00:01 AM
-  const HORA_FIN = '20:30:01';     // 08:30:01 PM
+  const HORA_INICIO = '00:00:01';
+  const HORA_FIN = '20:30:01';
   // =====================
 
   // Elementos del DOM
@@ -28,7 +28,8 @@ document.addEventListener('DOMContentLoaded', () => {
     formulario: document.getElementById('formularioJugada'),
     btnContinuar: document.getElementById('btnContinuar'),
     btnDescargarPDFResumen: document.getElementById('btnDescargarPDFResumen'),
-    progresoBar: document.getElementById('progresoBar')
+    progresoBar: document.getElementById('progresoBar'),
+    horaVenezuela: document.getElementById('horaVenezuela')
   };
 
   let jugadasEnviadas = 0;
@@ -48,8 +49,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const ahora = new Date();
     
     // Venezuela es UTC-4 todo el año
-    const offsetVenezuela = -4 * 60; // en minutos
-    const offsetLocal = ahora.getTimezoneOffset(); // en minutos
+    const offsetVenezuela = -4 * 60;
+    const offsetLocal = ahora.getTimezoneOffset();
     
     // Calcular la diferencia entre la zona horaria local y Venezuela
     const diffMinutos = offsetLocal - offsetVenezuela;
@@ -62,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function estaEnHorarioPermitido() {
     const horaVenezuela = obtenerHoraVenezuela();
-    const horaActual = horaVenezuela.toTimeString().split(' ')[0]; // Obtiene "HH:MM:SS"
+    const horaActual = horaVenezuela.toTimeString().split(' ')[0];
     
     console.log(`🕐 Hora local: ${new Date().toTimeString().split(' ')[0]}`);
     console.log(`🇻🇪 Hora Venezuela (UTC-4): ${horaActual}`);
@@ -80,10 +81,9 @@ document.addEventListener('DOMContentLoaded', () => {
       return `⏰ Fuera de horario (${horaFormateada} VET). Recepción: ${HORA_INICIO} - ${HORA_FIN} VET`;
     }
     
-    return null; // null significa que está en horario
+    return null;
   }
 
-  // Función opcional para mostrar la hora actual de Venezuela en la interfaz
   function mostrarHoraVenezuela() {
     const horaVenezuela = obtenerHoraVenezuela();
     const opciones = { 
@@ -95,13 +95,9 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     
     const horaFormateada = horaVenezuela.toLocaleTimeString('es-VE', opciones);
-    console.log(`🇻🇪 Hora actual en Venezuela: ${horaFormateada} VET`);
     
-    // Opcional: Mostrar en la interfaz si quieres
-    // Puedes agregar un elemento en el HTML para esto
-    const elementoHora = document.getElementById('horaVenezuela');
-    if (elementoHora) {
-      elementoHora.textContent = `Hora Venezuela: ${horaFormateada} VET`;
+    if (elementos.horaVenezuela) {
+      elementos.horaVenezuela.textContent = `Hora Venezuela: ${horaFormateada} VET`;
     }
   }
 
@@ -149,7 +145,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function actualizarContadorJugadas() {
-    // Verificar primero si está fuera de horario
     const mensajeHorario = obtenerMensajeHorario();
     if (mensajeHorario) {
       elementos.textoContador.textContent = mensajeHorario;
@@ -157,7 +152,6 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
     
-    // Si está en horario, mostrar contador normal
     elementos.textoContador.style.color = '';
     
     if (maxJugadasPermitidas === 0) {
@@ -199,7 +193,6 @@ document.addEventListener('DOMContentLoaded', () => {
       img.alt = nombres[num - 1];
       img.className = 'imagen-carton';
       
-      // CORRECCIÓN: Guardar referencia a casilla en una variable local
       const casillaRef = casilla;
       
       img.onerror = function() {
@@ -211,11 +204,11 @@ document.addEventListener('DOMContentLoaded', () => {
           ${nombres[num - 1]}<br>
           <small>${num}</small>
         `;
-        casillaRef.appendChild(fallback); // Usar casillaRef en lugar de casilla
+        casillaRef.appendChild(fallback);
       };
       
       img.onload = function() {
-        casillaRef.appendChild(img); // Usar casillaRef en lugar de casilla
+        casillaRef.appendChild(img);
       };
       
       elementos.cartonJugada.appendChild(casilla);
@@ -235,19 +228,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const puedeJugar = jugadasEnviadas < maxJugadasPermitidas;
     const seleccionCompleta = seleccionados.length === 15;
     
-    // VERIFICAR HORARIO
     const mensajeHorario = obtenerMensajeHorario();
     const enHorarioPermitido = mensajeHorario === null;
 
     if (mensajeHorario) {
-      // Si está fuera de horario, mostrar mensaje y desactivar botón
       elementos.textoContador.textContent = mensajeHorario;
       elementos.textoContador.style.color = '#d32f2f';
       elementos.btnEnviar.disabled = true;
       return;
     }
 
-    // Si está en horario, validar normalmente
     elementos.btnEnviar.disabled = !(
       nombreValido && 
       telefonoValido && 
@@ -257,7 +247,6 @@ document.addEventListener('DOMContentLoaded', () => {
       seleccionCompleta
     ) || enviandoJugada;
     
-    // Restaurar color normal del texto
     elementos.textoContador.style.color = '';
   }
 
@@ -275,44 +264,60 @@ document.addEventListener('DOMContentLoaded', () => {
     validarFormulario();
   }
 
-  // FUNCIÓN CLAVE: Formatear referencia con ceros ANTES de enviar
   function formatearReferencia(referencia) {
     return referencia.padStart(4, '0');
   }
 
+  // 🚨 **FUNCIÓN CLAVE CORREGIDA** - Compatible con tu Google Apps Script actual
   async function guardarJugada(jugada) {
-    // Asegurar formato de referencia y teléfono como TEXTO
-    const referenciaFormateada = jugada.referencia.padStart(4, '0');
-    const telefonoFormateado = jugada.telefono.toString();
+    const referenciaFormateada = formatearReferencia(jugada.referencia);
     
-    // AGREGAR PREFIJOS PARA FORZAR TEXTO EN GOOGLE SHEETS
-    const jugadaCompleta = {
+    // **FORMATO EXACTO que espera tu Google Apps Script**
+    const jugadaParaGoogleSheets = {
       nombre: jugada.nombre || '',
-      telefono: `📞${telefonoFormateado}`, // Prefijo emoji para forzar texto
+      telefono: jugada.telefono.toString(),
       monto: COSTO_POR_JUGADA,
-      referencia: `🔢${referenciaFormateada}`, // Prefijo emoji para forzar texto
+      referencia: referenciaFormateada,
+      animalitos: [...jugada.animalitos] // Array como lo espera tu script
+    };
+
+    console.log('📤 Enviando a Google Sheets:', jugadaParaGoogleSheets);
+
+    // Guardar localmente
+    const jugadaLocal = {
+      nombre: jugada.nombre,
+      telefono: jugada.telefono,
+      referencia: referenciaFormateada,
       animalitos: [...jugada.animalitos],
-      fecha: jugada.fecha || new Date().toISOString(),
-      numeroJugada: jugadasActuales.length + 1
+      fecha: new Date().toISOString(),
+      numeroJugada: jugadasActuales.length + 1,
+      monto: COSTO_POR_JUGADA
     };
     
-    // Guardar localmente (sin los prefijos para mostrar limpio)
-    const jugadaLocal = {
-      ...jugadaCompleta,
-      telefono: telefonoFormateado,
-      referencia: referenciaFormateada
-    };
     jugadasActuales.push(jugadaLocal);
     
-    // Guardar en Google Sheets - MÉTODO ORIGINAL
+    // **ENVÍO A GOOGLE SHEETS - Formato compatible**
     try {
-      await fetch(GOOGLE_SCRIPT_URL, {
+      const response = await fetch(GOOGLE_SCRIPT_URL, {
         method: 'POST',
-        body: JSON.stringify(jugadaCompleta)
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(jugadaParaGoogleSheets)
       });
-      console.log('✅ Jugada enviada a Google Sheets con referencias protegidas');
+      
+      const result = await response.json();
+      
+      if (result.success) {
+        console.log('✅ Jugada guardada EXITOSAMENTE en Google Sheets');
+        console.log('📊 Datos guardados:', jugadaParaGoogleSheets);
+      } else {
+        console.log('⚠️ Error en Google Sheets:', result.error);
+        console.log('📦 Datos guardados localmente:', jugadaLocal);
+      }
     } catch (error) {
-      console.log('⚠️ No se pudo guardar en Google Sheets, pero está guardado localmente');
+      console.log('⚠️ Error de conexión, pero guardado localmente');
+      console.error('Error:', error);
     }
     
     return jugadaLocal;
@@ -328,14 +333,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const primeraJugada = jugadasActuales[0];
     
-    // FUNCIÓN PARA LIMPIAR CARACTERES ESPECIALES AL MOSTRAR
-    const limpiarValor = (valor) => {
-      if (typeof valor === 'string') {
-        return valor.replace(/[🔢📞]/g, '');
-      }
-      return valor;
-    };
-
     const datosUsuario = document.createElement('div');
     datosUsuario.className = 'datos-usuario';
     datosUsuario.innerHTML = `
@@ -347,7 +344,7 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
         <div class="dato-item">
           <strong>Teléfono:</strong>
-          <span>${limpiarValor(primeraJugada.telefono)}</span>
+          <span>${primeraJugada.telefono}</span>
         </div>
         <div class="dato-item">
           <strong>Monto Total Transferido:</strong>
@@ -355,7 +352,7 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
         <div class="dato-item">
           <strong>Referencia:</strong>
-          <span>${limpiarValor(primeraJugada.referencia)}</span>
+          <span>${primeraJugada.referencia}</span>
         </div>
         <div class="dato-item">
           <strong>Fecha:</strong>
@@ -451,19 +448,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const primeraJugada = jugadasActuales[0];
       doc.setFontSize(12);
       doc.setTextColor(0, 0, 0);
-      
-      // También limpiar los valores en el PDF
-      const limpiarValor = (valor) => {
-        if (typeof valor === 'string') {
-          return valor.replace(/[🔢📞]/g, '');
-        }
-        return valor;
-      };
 
       doc.text(`Nombre y Apellido: ${primeraJugada.nombre}`, 20, 40);
-      doc.text(`Teléfono: ${limpiarValor(primeraJugada.telefono)}`, 20, 50);
+      doc.text(`Teléfono: ${primeraJugada.telefono}`, 20, 50);
       doc.text(`Monto Total Transferido: $${montoTotal}`, 20, 60);
-      doc.text(`Referencia: ${limpiarValor(primeraJugada.referencia)}`, 20, 70);
+      doc.text(`Referencia: ${primeraJugada.referencia}`, 20, 70);
       doc.text(`Costo por Jugada: $${COSTO_POR_JUGADA}`, 20, 80);
       doc.text(`Total de Jugadas: ${jugadasActuales.length}`, 20, 90);
       doc.text(`Fecha: ${new Date(primeraJugada.fecha).toLocaleString()}`, 20, 100);
@@ -505,7 +494,7 @@ document.addEventListener('DOMContentLoaded', () => {
         yPosition = lineHeight + 8;
       });
       
-      doc.save(`comprobante_${limpiarValor(primeraJugada.referencia)}.pdf`);
+      doc.save(`comprobante_${primeraJugada.referencia}.pdf`);
       
     } catch (error) {
       console.error('Error al generar comprobante:', error);
@@ -536,7 +525,6 @@ document.addEventListener('DOMContentLoaded', () => {
     img.alt = nombres[i - 1];
     img.className = 'imagen-animalito';
     
-    // CORRECCIÓN: Usar imgContainer directamente en lugar de variable externa
     const imgContainerRef = imgContainer;
     
     img.onerror = function() {
@@ -586,7 +574,6 @@ document.addEventListener('DOMContentLoaded', () => {
   elementos.formulario.addEventListener('submit', async (e) => {
     e.preventDefault();
     
-    // VERIFICAR HORARIO ANTES DE ENVIAR
     const mensajeHorario = obtenerMensajeHorario();
     if (mensajeHorario) {
       alert(`❌ No se puede enviar la jugada:\n${mensajeHorario}`);
@@ -609,13 +596,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     prepararEnvio();
 
-    // FORMATEAR REFERENCIA ANTES DE ENVIAR
     referencia = formatearReferencia(referencia);
 
     const jugada = {
       nombre: nombre,
       telefono: telefono,
-      referencia: referencia, // YA FORMATEADA
+      referencia: referencia,
       animalitos: [...seleccionados],
       fecha: new Date().toISOString()
     };
@@ -651,14 +637,10 @@ document.addEventListener('DOMContentLoaded', () => {
   calcularJugadasPermitidas();
   validarFormulario();
   
-  // Iniciar el reloj de Venezuela
-  setInterval(mostrarHoraVenezuela, 60000); // Actualizar cada minuto
-  mostrarHoraVenezuela(); // Llamar inmediatamente
+  setInterval(mostrarHoraVenezuela, 60000);
+  mostrarHoraVenezuela();
   
   console.log('🚀 Aplicación iniciada correctamente');
   console.log('📊 Integración con Google Sheets: ACTIVADA');
-  console.log('🛡️ Protección contra múltiples clics: ACTIVADA');
-  console.log('🔢 Formateo de referencias con ceros: ACTIVADO');
-  console.log('📞 Prefijos emoji para teléfonos y referencias: ACTIVADO');
-  console.log('🇻🇪 Control de horarios Venezuela (UTC-4): ACTIVADO');
+  console.log('🔄 Formato de datos COMPATIBLE con Google Apps Script existente');
 });
