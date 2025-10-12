@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // HORARIOS PERMITIDOS (Formato 24 horas) - HORA DE VENEZUELA (UTC-4)
   const HORA_INICIO = '00:00:01';
-  const HORA_FIN = '20:30:01';
+  const HORA_FIN = '21:30:01';
   // =====================
 
   // Elementos del DOM
@@ -644,3 +644,4 @@ document.addEventListener('DOMContentLoaded', () => {
   console.log('📊 Integración con Google Sheets: ACTIVADA');
   console.log('🔄 Formato de datos COMPATIBLE con Google Apps Script existente');
 });
+
