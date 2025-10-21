@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
   console.log('🟢 Iniciando aplicación...');
   
   // === CONFIGURACIÓN ===
-  const COSTO_POR_JUGADA = 20;
+  const COSTO_POR_JUGADA = 30;
   const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw-Zh5K0OBodzlm3XjBjmaBez2otuDetKyMMgJa7Mp5jOHEMomcIONHFVObq4UZV5R0_A/exec';
 
   // HORARIOS PERMITIDOS (Formato 24 horas) - HORA DE VENEZUELA (UTC-4)
@@ -644,5 +644,6 @@ document.addEventListener('DOMContentLoaded', () => {
   console.log('📊 Integración con Google Sheets: ACTIVADA');
   console.log('🔄 Formato de datos COMPATIBLE con Google Apps Script existente');
 });
+
 
 
